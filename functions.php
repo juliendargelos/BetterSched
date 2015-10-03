@@ -38,15 +38,12 @@
 	// Récupération de l'emploi du temps pour un groupe et une semaine donnée
 	function get_sched($group,$year,$week) {
 		
-		// Supression du fichier d'enregistrement des cookies
-		if(file_exists(COOKIE_FILE)) @unlink(COOKIE_FILE);
-		
-		// Détection d'erreurs dans les paramètres
+		// Détection d'erreurs dans les paramètres indiqués
 		if($group!='MMI' && $group!='PUB' && $group!='LP') return error('Le groupe indiqué n\'existe pas.');
 		if(($year!=1 && $year!=2) || ($year==2 && $group=='LP')) return error('L\'année d\'enseignement indiquée n\'existe pas.');
 		if($week>53 || $week<1) return error('La semaine indiquée n\'existe pas.');
 		
-		// Correspondance entre les paramètres fournis et les numéros de semestres
+		// Correspondance entre les paramètres fournis et les numéros des semestres
 		$semesters=[
 			['semester'=>'1','year'=>1,'begin'=>38,'end'=>53,'value'=>1],
 			['semester'=>'2','year'=>1,'begin'=>2,'end'=>15],
@@ -62,7 +59,7 @@
 			}
 		}
 		
-		// Paramètres de connexion
+		// Paramètres POST de connexion
 		$signin_param=[
 			'modeglobal'=>'',
 			'modeconnect'=>'connect',
@@ -70,7 +67,7 @@
 			'acct_pass'=>SIGNIN_PASSWORD
 		];
 		
-		// Paramètres de récupération de l'emploi du temps
+		// Paramètres POST de récupération de l'emploi du temps
 		$sched_param=[
 			'mode'=>'edt',
 			'idee'=>'',
@@ -181,7 +178,7 @@
 									}
 								}
 							}
-							// Remplissage du tableau de l'emploi du temps avec les données récupérée
+							// Remplissage du tableau de l'emploi du temps avec les données récupérées
 							if(array_key_exists('day',$data) && array_key_exists('daynumber',$data) && array_key_exists('month',$data) && array_key_exists('year',$data) && array_key_exists('beginhour',$data) && array_key_exists('endhour',$data) && array_key_exists('professor',$data) && array_key_exists('classroom',$data)) {
 								array_push($sched[$data['day']],$data);
 							}
