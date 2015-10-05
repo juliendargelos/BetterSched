@@ -8,6 +8,27 @@
 		return false;
 	}
 	
+	function fr_en_day($lang) {
+		if($lang=='en') {
+			return [
+				'Lundi'=>'monday',
+				'Mardi'=>'tuesday',
+				'Mercredi'=>'wednesday',
+				'Jeudi'=>'thursday',
+				'Vendredi'=>'friday',
+				'Samedi'=>'saturday'
+			];
+		}
+		else return [
+			'monday'=>'Lundi',
+			'tuesday'=>'Mardi',
+			'wednesday'=>'Mercredi',
+			'thursday'=>'Jeudi',
+			'friday'=>'Vendredi',
+			'saturday'=>'Samedi'
+		];
+	}
+	
 	// Envoi d'une requête HTTP avec cURL
 	function curl_request($url,$param,$handle=null) {
 		if($handle==null) {
@@ -71,7 +92,7 @@
 		$sched_param=[
 			'mode'=>'edt',
 			'idee'=>'',
-			'aller'=>'',
+			'aller'=>'0',
 			'semaine'=>strval($week),
 			'liste'=>'-1',
 			'aff_edtabs'=>'-1',
@@ -105,15 +126,29 @@
 		// Fermeture de la ressource cURL
 		curl_close($result['handle']['curl']);
 		
-		// Tableau de l'emploi du temps
-		$sched=[
-			'Lundi'=>[],
-			'Mardi'=>[],
-			'Mercredi'=>[],
-			'Jeudi'=>[],
-			'Vendredi'=>[],
-			'Samedi'=>[]
+		// Correspondance français/anglais des jours
+		$fr_en_day=fr_en_day('en');
+		
+		// Tableau brut de l'emploi du temps
+		$plain_sched=[
+			'monday'=>[],
+			'tuesday'=>[],
+			'wednesday'=>[],
+			'thursday'=>[],
+			'friday'=>[],
+			'saturday'=>[]
 		];
+		
+		// Tableau de l'emploi du temps
+		$sched=$plain_sched;
+		
+		// Remplissage du tableau de l'emploi du temps avec les heures
+		foreach($sched as $dayname=>$day) {
+			for($h=8; $h<=19; $h++) {
+				$sched[$dayname][$h.'h']=[];
+				$sched[$dayname][$h.'h30']=[];
+			}
+		}
 		
 		// Parsing du document html
 		$document=new DOMDocument();
@@ -136,11 +171,14 @@
 							$content=preg_replace('#[\s\n]+$#','',$content);
 							$content=preg_replace('#^MMI\s#','',$content);
 							$content=preg_replace('#^[Ss]emestre\s\d\s#','',$content);
+							$content=preg_replace('#^cours\s#i','',$content);
+							$content=preg_replace('#^groupe\s#i','',$content);
 							while(preg_match('#\s\((cours|TP|\d+ PC|LP|multimédia)\)\s?\d?$#',$content) || preg_match('#\sSalle [\d-]+\s?\d?$#',$content)) {
-								$content=preg_replace('#\s\((cours|TP|\d+ PC|LP|multimédia)\)\s?\d?$#','',$content);
-								$content=preg_replace('#\sSalle [\d-]+\s?\d?$#','',$content);
+								$content=preg_replace('#\s\((cours|TP|\d+ PC|LP|multimédia)\)\s?\d?$#i','',$content);
+								$content=preg_replace('#\sSalle\s[\d-]+\s?\d?$#i','',$content);
+								$content=preg_replace('#\sAmphi\s[\d]+\s?\d?$#i','',$content);
 							}
-							$content=preg_replace('#[A-Z\s]+\d?$#','',$content);
+							$content=preg_replace('#\s[A-Z\s]+\d?$#','',$content);
 							// Correction des troncatures
 							$content=preg_replace('#informatio$#','information',$content);
 							// Majuscule à la première lettre et enregistrement
@@ -168,19 +206,20 @@
 										$professor=explode('-',preg_replace('#-+$#','',$value));
 										$data['professor']='';
 										foreach($professor as $p) $data['professor'].=strtoupper(substr($p,0,1)).'. '.ucfirst(strtolower(substr($p,1))).', ';
-										if($data['professor']=='. , ') $data['professor']='Inconnu';
+										if($data['professor']=='. , ') $data['professor']=false;
 										else $data['professor']=substr($data['professor'],0,-2);
 									}
 									// Récupération du numéro de la salle
 									elseif(preg_match('#^\s*Salle\(s\)\s*$#',$key)) {
 										$data['classroom']=preg_replace('#-+$#','',$value);
-										if($data['classroom']=='') $data['classroom']='Inconnue';
+										if($data['classroom']=='') $data['classroom']=false;
 									}
 								}
 							}
 							// Remplissage du tableau de l'emploi du temps avec les données récupérées
 							if(array_key_exists('day',$data) && array_key_exists('daynumber',$data) && array_key_exists('month',$data) && array_key_exists('year',$data) && array_key_exists('beginhour',$data) && array_key_exists('endhour',$data) && array_key_exists('professor',$data) && array_key_exists('classroom',$data)) {
-								array_push($sched[$data['day']],$data);
+								$data['id']=md5(json_encode($data));
+								array_push($plain_sched[$fr_en_day[$data['day']]],$data);
 							}
 						}
 					}
@@ -188,7 +227,63 @@
 			}
 		}
 		
+		foreach($plain_sched as $dayname=>$day) {
+			foreach($day as $c) {
+				$beginhour=intval(preg_replace('#^(\d+)h\d*$#','$1',$c['beginhour']))+(intval(preg_replace('#^\d+h(\d*)$#','$1',$c['beginhour']))==30 ? 0.5 : 0);
+				$endhour=intval(preg_replace('#^(\d+)h\d*$#','$1',$c['endhour']))+(intval(preg_replace('#^\d+h(\d*)$#','$1',$c['endhour']))==30 ? 0.5 : 0);
+				for($h=$beginhour; $h<$endhour; $h+=0.5) {
+					$hour=intval($h).'h'.(intval($h)!=$h ? '30' : '');
+					array_push($sched[$dayname][$hour],$c);
+				}
+			}
+		}
+		
 		// Retour de l'emploi du temps
 		return $sched;
+	}
+	
+	// Transformation des données d'un jour en tableau HTML
+	function daydata_to_htmltable($dayname,$daydata) {
+	
+		// Correspondance anglais/français des jours
+		$fr_en_day=fr_en_day('fr');
+		
+		$max_colspan=1;
+		foreach($daydata as $kh=>$vh) if(count($vh)>$max_colspan) $max_colspan=count($vh);
+		$max_colspan++;
+		
+		$html_table='<table><tr><td colspan="'.$max_colspan.'"></tr>';
+		foreach($daydata as $kh=>$vh) {
+			$html_table.='<tr><td><span>'.(substr($kh,-2)=='30' ? '30' : $kh).'</span></td>';
+			if(count($vh)==0) $html_table.=(count($vh)==0 ? '<td colspan="'.$max_colspan.'"></td>' : '');
+			foreach($vh as $c) {
+				$cbegin=false;
+				foreach($daydata as $lkh=>$lvh) {
+					if($lkh==$kh) break;
+					foreach($lvh as $lc) {
+						if($lc['id']==$c['id']) {
+							$cbegin=true;
+							break;
+						}
+					}
+					if($cbegin) break;
+				}
+				if(!$cbegin) {
+					$length=0;
+					foreach($daydata as $lkh=>$lvh) {
+						foreach($lvh as $lc) if($lc['id']==$c['id']) $length++;
+					}
+					$html_table.='<td class="block" rowspan="'.$length.'" colspan="'.($max_colspan-count($vh)).'"><div>';
+					$html_table.='<span>'.$c['content'].'</span><br>';
+					if($c['professor']!==false) $html_table.='<span>'.$c['professor'].'</span>';
+					if($c['classroom']!==false) $html_table.='<span>'.$c['classroom'].'</span>';
+					$html_table.='</div></td>';
+				}
+			}
+			$html_table.='</tr>';
+		}
+		$html_table.='</table>';
+		
+		return $html_table;
 	}
 ?>
