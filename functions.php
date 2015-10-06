@@ -37,13 +37,13 @@
 			curl_setopt($curl,CURLOPT_USERAGENT,USER_AGENT);
 			curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
 			curl_setopt($curl,CURLOPT_POST,true);
-			curl_setopt($curl,CURLOPT_POSTFIELDS,$param);
 			curl_setopt($curl,CURLOPT_COOKIESESSION,true);
 		}
 		else {
 			$curl=$handle['curl'];
 			curl_setopt($curl,CURLOPT_COOKIE,$handle['cookies']);
 		}
+		curl_setopt($curl,CURLOPT_POSTFIELDS,$param);
 		curl_setopt($curl,CURLOPT_URL,$url);
 		
 		$output=curl_exec($curl);

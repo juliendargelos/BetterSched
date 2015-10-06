@@ -24,6 +24,21 @@
 		<link rel="stylesheet" type="text/css" href="style.css"/>
 	</head>
 	<body>
+		<div id="date">
+			<?php
+				$break=false;
+				foreach($sched[$param['day']] as $h) {
+					foreach($h as $c) {
+						if(array_key_exists('day',$c) && array_key_exists('daynumber',$c) && array_key_exists('month',$c) && array_key_exists('year',$c)) {
+							echo $c['day'].' '.$c['daynumber']. ' '.$c['month']. ' '.$c['year'];
+							$break=true;
+							break;
+						}
+					}
+					if($break) break;
+				}
+			?>
+		</div>
 		<table id="main">
 			<tr>
 				<td id="input" colspan="7">
@@ -76,5 +91,11 @@
 				</td>
 			</tr>
 		</table>
+		<script type="text/javascript">
+			window.onscroll=function() {
+				if(document.body.scrollTop>=176) document.getElementById('date').className='show';
+				else document.getElementById('date').className='';
+			}
+		</script>
 	</body>
 </html>
