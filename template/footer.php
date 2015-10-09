@@ -6,9 +6,10 @@
 ?>
 		<footer>
 			<div class="socialContainer">
-				<div class="facebook social"></div>
-				<a href="?p=apropos"><div class="apropos social"></div></a>
-				<div class="twitter social"></div>
+				<a href="https://www.facebook.com/bettersched"><div class="facebook social"></div></a>
+				<a href="/about"><div class="apropos social"></div></a>
+				<a href="https://github.com/juliendargelos/BetterSched"><div class="github social"></div></a>
+				<a href="https://twitter.com/BetterSched"><div class="twitter social"></div></a>
 			</div>
 		</footer>
 	</body>

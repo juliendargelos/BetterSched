@@ -50,6 +50,6 @@ var swipe={
 };
 
 window.onscroll=function() {
-	if(document.body.scrollTop>=213) document.getElementById('date').className='show';
+	if(document.body.scrollTop>=260) document.getElementById('date').className='show';
 	else document.getElementById('date').className='';
 }

@@ -11,7 +11,7 @@
 </header>
 <section id="messageContainer">
 	<div class="encartApropos">
-		BetterSched' est une application PHP créée par Paul Bonneau et Julien Dargelos dans le but de proposer une
+		BetterSched' est une application PHP créée par Paul Bonneau et Julien Dargelos. Son but est de proposer une
 interface plus agréable que Sattelys, tant sur ordinateur que sur mobile.
 	</div>
 </section>
@@ -24,7 +24,7 @@ interface plus agréable que Sattelys, tant sur ordinateur que sur mobile.
 				<strong>Julien Dargelos</strong> Julien est un étudiant en 1ère année de MMI à l'IUT Michel de Montaigne.
 			</figcaption>
 			<div class="blocSocial">
-				<a href="https://fr.linkedin.com/in/juliendargelos" target="_blank"><div class="linkdin iconSocial"></div></a>
+				<a href="https://fr.linkedin.com/in/juliendargelos" target="_blank"><div class="linkedin iconSocial"></div></a>
 				<a href="https://twitter.com/juliendargelos" target="_blank"><div class="twitter iconSocial"></div></a>
 			</div>
 		</figure>
@@ -34,7 +34,7 @@ interface plus agréable que Sattelys, tant sur ordinateur que sur mobile.
 				<strong>Paul Bonneau</strong> Paul est un étudiant en 1ère année de MMI à l'IUT Michel de Montaigne
 			</figcaption>
 			<div class="blocSocial">
-				<a href="https://fr.linkedin.com/in/paulbonneau2" target="_blank"><div class="linkdin iconSocial"></div></a>
+				<a href="https://fr.linkedin.com/in/paulbonneau2" target="_blank"><div class="linkedin iconSocial"></div></a>
 				<a href="https://twitter.com/bonneaupaul2" target="_blank"><div class="twitter iconSocial"></div></a>
 			</div>
 		</figure>
