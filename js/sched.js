@@ -48,3 +48,8 @@ var swipe={
 		}
 	}
 };
+
+window.onscroll=function() {
+	if(document.body.scrollTop>=213) document.getElementById('date').className='show';
+	else document.getElementById('date').className='';
+}

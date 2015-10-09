@@ -1,0 +1,6 @@
+
+RewriteCond %{REQUEST_URI} !^/medias/
+RewriteCond %{REQUEST_URI} !^/js/
+RewriteCond %{REQUEST_URI} !^/css/
+RewriteCond %{REQUEST_URI} !^/index.php$
+RewriteRule ^(.+) ?page=$1 [L]

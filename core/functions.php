@@ -1,5 +1,10 @@
 <?php
 
+	if(!defined('INCLUDE')) {
+		header('location: /');
+		exit;
+	}
+
 	require_once('const.php');
 
 	// Affichage d'un message d'erreur
@@ -56,8 +61,44 @@
 		return ['handle'=>['curl'=>$curl,'cookies'=>$cookies],'output'=>$output];
 	}
 
+	// Création d'une session
+	function session_set($username,$password) {
+		$signin_param=[
+			'modeglobal'=>'',
+			'modeconnect'=>'connect',
+			'util'=>$username,
+			'acct_pass'=>$password
+		];
+		$result=curl_request(SIGNIN_URL,$signin_param);
+		if(strpos($result['output'],SIGNIN_MESSAGE)===false) return false;
+		else {
+			if(session_id()=='') session_start();
+			$_SESSION['username']=$username;
+			$_SESSION['password']=$password;
+			return true;
+		}
+	}
+
+	// Test de l'existence d'une session
+	function session_check() {
+		if(session_id()=='') session_start();
+		if(isset($_SESSION['username'],$_SESSION['password'])) {
+			$signin_param=[
+				'modeglobal'=>'',
+				'modeconnect'=>'connect',
+				'util'=>$_SESSION['username'],
+				'acct_pass'=>$_SESSION['password']
+			];
+
+			$result=curl_request(SIGNIN_URL,$signin_param);
+			return strpos($result['output'],SIGNIN_MESSAGE)===false ? false : true;
+		}
+		else return false;
+	}
+
 	// Récupération de l'emploi du temps pour un groupe et une semaine donnée
 	function get_sched($group,$year,$week) {
+		if(!session_check()) return false;
 		// Détection d'erreurs dans les paramètres indiqués
 		if($group!='MMI' && $group!='PUB' && $group!='LP') return error('Le groupe indiqué n\'existe pas.');
 		if(($year!=1 && $year!=2) || ($year==2 && $group=='LP')) return error('L\'année d\'enseignement indiquée n\'existe pas.');
@@ -83,8 +124,8 @@
 		$signin_param=[
 			'modeglobal'=>'',
 			'modeconnect'=>'connect',
-			'util'=>SIGNIN_USERNAME,
-			'acct_pass'=>SIGNIN_PASSWORD
+			'util'=>$_SESSION['username'],
+			'acct_pass'=>$_SESSION['password']
 		];
 
 		// Paramètres POST de récupération de l'emploi du temps
