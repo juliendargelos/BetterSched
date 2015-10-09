@@ -1,13 +1,13 @@
 <?php
-	
+
 	require_once('const.php');
-	
+
 	// Affichage d'un message d'erreur
 	function error($message) {
 		if(DISPLAY_ERROR) echo htmlentities($message);
 		return false;
 	}
-	
+
 	function fr_en_day($lang) {
 		if($lang=='en') {
 			return [
@@ -28,7 +28,7 @@
 			'saturday'=>'Samedi'
 		];
 	}
-	
+
 	// Envoi d'une requête HTTP avec cURL
 	function curl_request($url,$param,$handle=null) {
 		if($handle==null) {
@@ -45,25 +45,24 @@
 		}
 		curl_setopt($curl,CURLOPT_POSTFIELDS,$param);
 		curl_setopt($curl,CURLOPT_URL,$url);
-		
+
 		$output=curl_exec($curl);
-		
+
 		preg_match_all('#Set-Cookie: (.+?;)#',$output,$matches);
 		$cookies='';
 		foreach($matches[1] as $cookie) $cookies.=$cookie;
 		if($handle!=null) $cookies=$handle['cookies'].$cookies;
-		
+
 		return ['handle'=>['curl'=>$curl,'cookies'=>$cookies],'output'=>$output];
 	}
-	
+
 	// Récupération de l'emploi du temps pour un groupe et une semaine donnée
 	function get_sched($group,$year,$week) {
-		
 		// Détection d'erreurs dans les paramètres indiqués
 		if($group!='MMI' && $group!='PUB' && $group!='LP') return error('Le groupe indiqué n\'existe pas.');
 		if(($year!=1 && $year!=2) || ($year==2 && $group=='LP')) return error('L\'année d\'enseignement indiquée n\'existe pas.');
 		if($week>53 || $week<1) return error('La semaine indiquée n\'existe pas.');
-		
+
 		// Correspondance entre les paramètres fournis et les numéros des semestres
 		$semesters=[
 			['semester'=>'1','year'=>1,'begin'=>38,'end'=>53,'value'=>1],
@@ -71,7 +70,7 @@
 			['semester'=>'3','year'=>2,'begin'=>38,'end'=>53,'value'=>1],
 			['semester'=>'4','year'=>2,'begin'=>2,'end'=>15]
 		];
-		
+
 		// Association du semestre correspondant aux paramètres
 		foreach($semesters as $s) {
 			if($s['year']==$year && (($week>=$s['begin'] && $week<=$s['end']) || (array_key_exists('value',$s) && $week==$s['value']))) {
@@ -79,7 +78,7 @@
 				break;
 			}
 		}
-		
+
 		// Paramètres POST de connexion
 		$signin_param=[
 			'modeglobal'=>'',
@@ -87,7 +86,7 @@
 			'util'=>SIGNIN_USERNAME,
 			'acct_pass'=>SIGNIN_PASSWORD
 		];
-		
+
 		// Paramètres POST de récupération de l'emploi du temps
 		$sched_param=[
 			'mode'=>'edt',
@@ -107,28 +106,28 @@
 			'onglet_actif'=>'1',
 			'filiere'=>$group
 		];
-		
+
 		// Connexion
 		$result=curl_request(SIGNIN_URL,$signin_param);
 		if(strpos($result['output'],SIGNIN_MESSAGE)===false) return error('Erreur lors de la connexion.');
-		
+
 		// Requête vers la page GPU (actualisation des cookies)
 		$result=curl_request(GPU_URL,[],$result['handle']);
-		
+
 		// Requête vers la page d'accueil de l'emploi du temps (actualisation des cookies + actualisation manuelle des cookies avec le groupe indiqué)
 		$result=curl_request(HOMESCHED_URL,[],$result['handle']);
 		$result['handle']['cookies'].='filiere='.$group.';';
-		
+
 		// Récupération de l'emploi du temps
 		$result=curl_request(SCHED_URL,$sched_param,$result['handle']);
 		if(strpos($result['output'],SCHED_MESSAGE)===false) return error('Erreur lors de la récupération de l\'emploi du temps.');
-		
+
 		// Fermeture de la ressource cURL
 		curl_close($result['handle']['curl']);
-		
+
 		// Correspondance français/anglais des jours
 		$fr_en_day=fr_en_day('en');
-		
+
 		// Tableau brut de l'emploi du temps
 		$plain_sched=[
 			'monday'=>[],
@@ -138,10 +137,10 @@
 			'friday'=>[],
 			'saturday'=>[]
 		];
-		
+
 		// Tableau de l'emploi du temps
 		$sched=$plain_sched;
-		
+
 		// Remplissage du tableau de l'emploi du temps avec les heures
 		foreach($sched as $dayname=>$day) {
 			for($h=8; $h<=19; $h++) {
@@ -149,7 +148,7 @@
 				$sched[$dayname][$h.'h30']=[];
 			}
 		}
-		
+
 		// Parsing du document html
 		$document=new DOMDocument();
 		@$document->loadHTML($result['output']);
@@ -226,7 +225,7 @@
 				}
 			}
 		}
-		
+
 		foreach($plain_sched as $dayname=>$day) {
 			foreach($day as $c) {
 				$beginhour=intval(preg_replace('#^(\d+)h\d*$#','$1',$c['beginhour']))+(intval(preg_replace('#^\d+h(\d*)$#','$1',$c['beginhour']))==30 ? 0.5 : 0);
@@ -237,22 +236,22 @@
 				}
 			}
 		}
-		
+
 		// Retour de l'emploi du temps
 		return $sched;
 	}
-	
+
 	// Transformation des données d'un jour en tableau HTML
 	function daydata_to_htmltable($dayname,$daydata) {
-	
+
 		// Correspondance anglais/français des jours
 		$fr_en_day=fr_en_day('fr');
-		
+
 		$max_colspan=1;
 		foreach($daydata as $kh=>$vh) if(count($vh)>$max_colspan) $max_colspan=count($vh);
 		$max_colspan++;
-		
-		$html_table='<table><tr><td colspan="'.$max_colspan.'"></tr>';
+
+		$html_table='<table><tr><td colspan="'.$max_colspan.'">'.$fr_en_day[$dayname].'</td></tr>';
 		foreach($daydata as $kh=>$vh) {
 			$html_table.='<tr><td><span>'.(substr($kh,-2)=='30' ? '30' : $kh).'</span></td>';
 			if(count($vh)==0) $html_table.=(count($vh)==0 ? '<td colspan="'.$max_colspan.'"></td>' : '');
@@ -283,7 +282,19 @@
 			$html_table.='</tr>';
 		}
 		$html_table.='</table>';
-		
+
+		return $html_table;
+	}
+
+	// Transformation des données d'un jour en tableau HTML pour bureau
+	function sched_to_htmltable($sched) {
+
+		$html_table='<table><tr>';
+		foreach($sched as $dayname=>$daydata) {
+			$html_table.='<td>'.daydata_to_htmltable($dayname,$daydata).'</td>';
+		}
+		$html_table.='</tr></table>';
+
 		return $html_table;
 	}
 ?>

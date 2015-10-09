@@ -79,6 +79,7 @@ body {
 	font-size:15px;
 	color:rgb(50,50,50);
 	text-align:center;
+	-webkit-appearance:none;
 }
 
 #sched > td table {
@@ -88,81 +89,223 @@ body {
 	border-collapse:collapse;
 }
 
+#full-sched {min-width:1170px;}
 
-#sched > td table tr td {
-	border-bottom:2px solid rgb(235,235,235);
-	font-family:Helvetica, Arial;
-	font-size:12px;
-	color:rgb(50,50,50);
-	text-align:center;
+@media screen and (min-width:601px) {
+	#date {display:none;}
+	
+	#sched #day-sched {display:none;}
+	
+	#sched > td table tr td table tr td {
+		border-bottom:2px solid rgb(235,235,235);
+		font-family:Helvetica, Arial;
+		font-size:11px;
+		color:rgb(50,50,50);
+		text-align:center;
+	}
+	
+	#sched > td table tr td table tr td {
+		height:30px;
+	}
+	
+	#sched > td table tr td table tr:nth-child(2n) td {
+		border-bottom:2px dotted rgb(235,235,235);
+	}
+	
+	#sched > td table tr td table tr td.block, #sched > td table tr td table tr:nth-child(2n) td.block {
+		padding:0;
+		border-right:2px solid rgb(250,250,250);
+		border-top:2px solid rgb(235,235,235);
+		border-bottom:2px solid rgb(235,235,235);
+	}
+	
+	#sched > td table tr td table tr td.block div {
+		background:#E74C3C;
+		width:100%;
+		height:100%;
+		padding:0 5px;
+		border-radius:7px;
+		box-sizing:border-box;
+		color:#fff;
+	}
+	
+	#sched > td table tr td table tr td.block span {
+		background:#fff;
+		margin:5px 0 0 5px;
+		padding:3px 4px;
+		border-radius:4px;
+		display:inline-block;
+		color:#E74C3C;
+	}
+	
+	#sched > td table tr td table tr td.block span:first-of-type {
+		background:transparent;
+		margin:10px 0 0 0;
+		color:#fff;
+	}
+	
+	#sched > td table tr td table tr td.block span:nth-of-type(2) {margin:5px 0 0 0;}
+	
+	#sched > td table tr td table tr td:first-child {
+		width:60px;
+		vertical-align:top;
+	}
+	
+	#sched > td table tr td table tr td:first-child span {
+		background:rgb(250,250,250);
+		width:30px;
+		margin:-11px auto 0 auto;
+		z-index:2;
+		display:block;
+		position:relative;
+		font-size:15px;
+		text-align:center;
+		color:rgb(180,180,180);
+	}
+	
+	#sched > td table tr td table tr:nth-child(2n+1) td:first-child span {
+		background:rgb(220,220,220);
+		width:22px;
+		height:22px;
+		margin:-13px auto 0 auto;
+		border-radius:100%;
+		font-size:12px;
+		line-height:22px;
+		color:#fff;
+	}
+	
+	#sched > td table tr td table tr:first-child td {
+		height:30px;
+		vertical-align:middle;
+	}
+	
+	#sched > td table tr td table tr td:first-child {width:0;opacity:0;}
+	#sched > td table tr td:first-child table tr td:first-child, #sched > td table tr td table tr:first-child td:first-child {width:60px;opacity:1;}
+	
+	#sched > td table tr td table tr:first-child td:first-child {
+		padding:0 10px;
+		font-size:15px;
+		color:rgb(180,180,180);
+	}
+	
+	#sched > td table tr td:first-child table tr:first-child td:first-child {
+		padding:0 10px 0 70px;
+	}
+	
 }
 
-#sched > td table tr td {
-	height:30px;
-}
-
-#sched > td table tr:nth-child(2n) td {
-	border-bottom:2px dotted rgb(235,235,235);
-}
-
-#sched > td table tr td.block, #sched > td table tr:nth-child(2n) td.block {
-	padding:0;
-	border-right:2px solid rgb(250,250,250);
-	border-top:2px solid rgb(235,235,235);
-	border-bottom:2px solid rgb(235,235,235);
-}
-
-#sched > td table tr td.block div {
-	background:#E74C3C;
-	width:100%;
-	height:100%;
-	padding:0 5px;
-	border-radius:7px;
-	box-sizing:border-box;
-	color:#fff;
-}
-
-#sched > td table tr td.block span {
-	background:#fff;
-	margin:5px 0 0 5px;
-	padding:6px;
-	border-radius:4px;
-	display:inline-block;
-	color:#E74C3C;
-}
-
-#sched > td table tr td.block span:first-child {
-	background:transparent;
-	margin:10px 0 0 0;
-	color:#fff;
-}
-
-#sched > td table tr td.block span:nth-child(2) {margin:5px 0 0 0;}
-
-#sched > td table tr td:first-child {
-	width:60px;
-	vertical-align:top;
-}
-
-#sched > td table tr td:first-child span {
-	background:rgb(250,250,250);
-	width:30px;
-	margin:-11px auto 0 auto;
-	z-index:2;
-	display:block;
-	position:relative;
-	font-size:15px;
-	text-align:center;
-	color:rgb(180,180,180);
-}
-
-#sched > td table tr:nth-child(2n+1) td:first-child span {
-	background:rgb(220,220,220);
-	width:22px;
-	height:22px;
-	margin:-13px auto 0 auto;
-	border-radius:100%;
-	font-size:12px;
-	line-height:22px;
-	color:#fff;
+@media screen and (max-width:600px) {
+	#input form div:nth-child(4) {display:none;}
+	
+	#sched #full-sched {display:none;}
+	
+	#sched > td table tr td {
+		border-bottom:2px solid rgb(235,235,235);
+		font-family:Helvetica, Arial;
+		font-size:13px;
+		color:rgb(50,50,50);
+		text-align:center;
+	}
+	
+	#sched > td table tr td {
+		height:30px;
+	}
+	
+	#sched > td table tr:nth-child(2n) td {
+		border-bottom:2px dotted rgb(235,235,235);
+	}
+	
+	#sched > td table tr td.block, #sched > td table tr:nth-child(2n) td.block {
+		padding:0;
+		border-right:2px solid rgb(250,250,250);
+		border-top:2px solid rgb(235,235,235);
+		border-bottom:2px solid rgb(235,235,235);
+	}
+	
+	#sched > td table tr td.block div {
+		background:#E74C3C;
+		width:100%;
+		height:100%;
+		padding:0 5px;
+		border-radius:7px;
+		box-sizing:border-box;
+		color:#fff;
+	}
+	
+	#sched > td table tr td.block span {
+		background:#fff;
+		margin:5px 0 0 5px;
+		padding:6px;
+		border-radius:4px;
+		display:inline-block;
+		color:#E74C3C;
+	}
+	
+	#sched > td table tr td.block span:first-of-type {
+		background:transparent;
+		margin:10px 0 0 0;
+		color:#fff;
+	}
+	
+	#sched > td table tr td.block span:nth-of-type(2) {margin:5px 0 0 0;}
+	
+	#sched > td table tr td:first-child {
+		width:60px;
+		vertical-align:top;
+	}
+	
+	#sched > td table tr td:first-child span {
+		background:rgb(250,250,250);
+		width:30px;
+		margin:-11px auto 0 auto;
+		z-index:2;
+		display:block;
+		position:relative;
+		font-size:15px;
+		text-align:center;
+		color:rgb(180,180,180);
+	}
+	
+	#sched > td table tr:nth-child(2n+1) td:first-child span {
+		background:rgb(220,220,220);
+		width:22px;
+		height:22px;
+		margin:-13px auto 0 auto;
+		border-radius:100%;
+		font-size:12px;
+		line-height:22px;
+		color:#fff;
+	}
+	
+	#sched > td table tr:first-child td:first-child {
+		padding:13px 0 0 0;
+		font-size:18px;
+		color:rgb(180,180,180);
+		text-align:middle;
+	}
+	
+	#day-sched {overflow:hidden;}
+	
+	#day-sched > div {
+		width:600%;
+	}
+	
+	#day-sched .day {
+		width:16.6666%;
+		position:relative;
+		display:inline-block;
+		-webkit-transition:0.2s;
+	}
+	
+	#day-sched.monday .d-monday {margin-left:0;}
+	
+	#day-sched.tuesday .d-monday {margin-left:-16.6666%;}
+	
+	#day-sched.wednesday .d-monday {margin-left:-33.3332%;}
+	
+	#day-sched.thursday .d-monday {margin-left:-49.9998%;}
+	
+	#day-sched.friday .d-monday {margin-left:-66.6664%;}
+	
+	#day-sched.saturday .d-monday {margin-left:-83.3333%;}
 }

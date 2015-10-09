@@ -1,6 +1,7 @@
 <?php
 	require_once('functions.php');
 	date_default_timezone_set('Europe/Paris');
+	$days=fr_en_day('fr');
 	$default=[
 		'group'=>'MMI',
 		'year'=>1,
@@ -25,19 +26,7 @@
 	</head>
 	<body>
 		<div id="date">
-			<?php
-				$break=false;
-				foreach($sched[$param['day']] as $h) {
-					foreach($h as $c) {
-						if(array_key_exists('day',$c) && array_key_exists('daynumber',$c) && array_key_exists('month',$c) && array_key_exists('year',$c)) {
-							echo $c['day'].' '.$c['daynumber']. ' '.$c['month']. ' '.$c['year'];
-							$break=true;
-							break;
-						}
-					}
-					if($break) break;
-				}
-			?>
+			<?php echo $days[$param['day']]; ?>
 		</div>
 		<table id="main">
 			<tr>
@@ -70,7 +59,6 @@
 							<label for="input-day">Jour</label>
 							<select id="input-day" name="day">
 								<?php
-									$days=fr_en_day('fr');
 									foreach($days as $en_day=>$fr_day) {
 										echo '<option value="'.$en_day.'"'.($param['day']==$en_day ? ' selected' : '').'>'.$fr_day.'</option>';
 									}
@@ -86,7 +74,12 @@
 			<tr id="sched">
 				<td>
 					<?php
-						echo daydata_to_htmltable($param['day'],$sched[$param['day']]);
+						echo '<div id="full-sched">'.sched_to_htmltable($sched).'</div>';
+						echo '<div id="day-sched" class="'.$param['day'].'"><div ontouchstart="swipe.start(event);" ontouchmove="swipe.move(event);" ontouchend="swipe.end();">';
+						foreach($sched as $dayname=>$daydata) {
+							echo '<div class="day d-'.$dayname.'" data-date="'.$days[$dayname].'">'.daydata_to_htmltable($dayname,$daydata).'</div>';
+						}
+						echo '</div></div>';
 					?>
 				</td>
 			</tr>
@@ -97,5 +90,6 @@
 				else document.getElementById('date').className='';
 			}
 		</script>
+		<script type="text/javascript" src="mobile.js"></script>
 	</body>
 </html>
