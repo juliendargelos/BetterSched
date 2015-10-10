@@ -197,8 +197,6 @@ body {
 }
 
 @media screen and (max-width:600px) {
-	#input form div:nth-child(4) {display:none;}
-
 	#sched #full-sched {display:none;}
 
 	#sched > td table tr td {

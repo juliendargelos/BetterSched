@@ -34,6 +34,30 @@
 		];
 	}
 
+	// Transformation des couleurs
+	function nColor($color) {
+		$color=strtolower($color);
+		$color_nColor=[
+			'#ffff33'=>'#cfcf29',
+			'#0033ff'=>'#2c49bd',
+			'#66cc00'=>'#83c145',
+			'#ff66cc'=>'#d571b4',
+			'#0000ff'=>'#4c4cf6',
+			'#ffffff'=>'#bfbbbb',
+			'#ff3300'=>'#e74c3c',
+			'#0099ff'=>'#4b8ab4',
+			'#ccffff'=>'#87c4c4',
+			'#ffff00'=>'#d5d51e',
+			'#33ccff'=>'#5db7d5',
+			'#ffcc00'=>'#ffcc00',
+			'#33ff00'=>'#72da58',
+			'#ff6699'=>'#e35987',
+			'#ffff66'=>'#cdcd53',
+			'#ffff99'=>'#c7c779'
+		];
+		return array_key_exists($color,$color_nColor) ? $color_nColor[$color] : $color;
+	}
+
 	// Envoi d'une requête HTTP avec cURL
 	function curl_request($url,$param,$handle=null) {
 		if($handle==null) {
@@ -205,6 +229,8 @@
 						$h=$td->getElementsByTagName('table');
 						if($h->length>0) {
 							$data=[];
+							// Récupération de la couleur
+							$data['color']=nColor($td->getAttribute('bgcolor'));
 							// Récupération du nom du cours, suppression des informations inutiles
 							$content=$td->getElementsByTagName('font')->item(0)->nodeValue;
 							$content=preg_replace('#^[\s\n]+#','',$content);
@@ -218,7 +244,7 @@
 								$content=preg_replace('#\sSalle\s[\d-]+\s?\d?$#i','',$content);
 								$content=preg_replace('#\sAmphi\s[\d]+\s?\d?$#i','',$content);
 							}
-							$content=preg_replace('#\s[A-Z\s]+\d?$#','',$content);
+							$content=preg_replace('#\s[A-Z\-\s]+\d?$#','',$content);
 							// Correction des troncatures
 							$content=preg_replace('#informatio$#','information',$content);
 							// Majuscule à la première lettre et enregistrement
@@ -313,10 +339,11 @@
 					foreach($daydata as $lkh=>$lvh) {
 						foreach($lvh as $lc) if($lc['id']==$c['id']) $length++;
 					}
-					$html_table.='<td class="block" rowspan="'.$length.'" colspan="'.($max_colspan-count($vh)).'"><div>';
+					$html_table.='<td class="block" rowspan="'.$length.'" colspan="'.($max_colspan-count($vh)).'">';
+					$html_table.='<div style="background-color:'.$c['color'].';">';
 					$html_table.='<span>'.$c['content'].'</span><br>';
-					if($c['professor']!==false) $html_table.='<span>'.$c['professor'].'</span>';
-					if($c['classroom']!==false) $html_table.='<span>'.$c['classroom'].'</span>';
+					if($c['professor']!==false) $html_table.='<span style="color:'.$c['color'].';">'.$c['professor'].'</span>';
+					if($c['classroom']!==false) $html_table.='<span style="color:'.$c['color'].';">'.$c['classroom'].'</span>';
 					$html_table.='</div></td>';
 				}
 			}

@@ -55,16 +55,6 @@
 							</select>
 						</div>
 						<div>
-							<label for="input-day">Jour</label>
-							<select id="input-day" name="day">
-								<?php
-									foreach($days as $en_day=>$fr_day) {
-										echo '<option value="'.$en_day.'"'.($param['day']==$en_day ? ' selected' : '').'>'.$fr_day.'</option>';
-									}
-								?>
-							</select>
-						</div>
-						<div>
 							<input type="submit" value="Valider"/>
 						</div>
 					</form>
