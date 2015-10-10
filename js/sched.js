@@ -6,7 +6,7 @@ var swipe={
 	touchPosition:{x:0,y:0},
 	touchLast:{x:0,y:0},
 	elementInit:{x:0,y:0},
-	first:true,
+	swipping:false,
 	elementPosition:{
 		get x(){return swipe.element.style.marginLeft=='' ? parseInt(getComputedStyle(swipe.element).getPropertyValue('margin-left')) : parseInt(swipe.element.style.marginLeft);},
 		set x(val){swipe.element.style.marginLeft=val+'px';},
@@ -23,18 +23,20 @@ var swipe={
 	},
 	move:function(event) {
 		swipe.touchPosition={x:event.changedTouches[0].pageX,y:event.changedTouches[0].pageY};
-		var deltaX=Math.pow(Math.abs(swipe.touchLast.x-swipe.touchPosition.x),1/2);
+		var deltaX=Math.pow(Math.abs(swipe.touchLast.x-swipe.touchPosition.x),1);
 		var newPosition=swipe.elementInit.x+(swipe.touchPosition.x-swipe.touchInit.x)*deltaX;
 		if(newPosition<swipe.elementInit.x-swipe.wPages) newPosition=swipe.elementInit.x-swipe.wPages;
 		else if(newPosition>swipe.elementInit.x+swipe.wPages) newPosition=swipe.elementInit.x+swipe.wPages;
-		if(Math.abs(swipe.touchPosition.y-swipe.touchLast.y)<=2 && newPosition<=0 && newPosition>=-(swipe.nPages-1)*swipe.wPages) {
+		if((Math.abs(swipe.touchPosition.y-swipe.touchLast.y)<=2 || swipe.swipping) && newPosition<=0 && newPosition>=-(swipe.nPages-1)*swipe.wPages) {
 			swipe.elementPosition.x=newPosition;
 			swipe.touchLast=swipe.touchPosition;
-			swipe.first=false;
+			if(!swipe.swipping) swipe.swipping=true;
+			event.preventDefault(); 
 		}
-		else if(swipe.first) swipe.end();
+		else swipe.end();
 	},
 	end:function() {
+		swipe.swipping=false;
 		for(var i=0; i<swipe.nPages; i++) {
 			var e=[-i*swipe.wPages+swipe.wPages/2,-i*swipe.wPages-swipe.wPages/2];
 			if(i==0) e[0]=Infinity;

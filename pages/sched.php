@@ -64,7 +64,7 @@
 				<td>
 					<?php
 						echo '<div id="full-sched">'.sched_to_htmltable($sched).'</div>';
-						echo '<div id="day-sched" class="'.$param['day'].'"><div ontouchstart="swipe.start(event);" ontouchmove="swipe.move(event);" ontouchend="swipe.end();">';
+						echo '<div id="day-sched" class="'.$param['day'].'"><div ontouchstart="swipe.start(event);" ontouchmove="swipe.move(event);" ontouchend="swipe.end(event);">';
 						foreach($sched as $dayname=>$daydata) {
 							echo '<div class="day d-'.$dayname.'" data-date="'.$days[$dayname].'">'.daydata_to_htmltable($dayname,$daydata).'</div>';
 						}
