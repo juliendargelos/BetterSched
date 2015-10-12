@@ -20,7 +20,7 @@
 	}
 ?>
 <?php
-	$alert=isset($_SESSION['result']) ? '<script type="text/javascript">if(window.innerWidth<=600) alert("Swippez horizontalement pour passer d\'un jour à un autre");</script>' : ''; 
+	$alert=isset($_SESSION['result']) ? '<script type="text/javascript">setTimeout(function(){if(window.innerWidth<=600){document.getElementById(\'result\').parentNode.removeChild(document.getElementById(\'result\'));document.body.insertAdjacentHTML(\'afterBegin\',\'<div id="result">Swippez pour passer d\\\'un jour à un autre.</div>\');}},3100);</script>' : ''; 
 ?>
 <?php include('template/header.php'); ?>
 		<div id="date">
