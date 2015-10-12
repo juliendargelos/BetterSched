@@ -19,6 +19,9 @@
 		$sched=get_sched($param['group'],$param['year'],$param['week']);
 	}
 ?>
+<?php
+	$alert=isset($_SESSION['result']) ? '<script type="text/javascript">if(window.innerWidth<=600) alert("Swippez horizontalement pour passer d\'un jour à un autre");</script>' : ''; 
+?>
 <?php include('template/header.php'); ?>
 		<div id="date">
 			<?php echo $sched[$param['day']]['date']; ?>
@@ -74,5 +77,6 @@
 			</tr>
 		</table>
 		<script type="text/javascript" src="js/sched.js"></script>
+		<?php echo $alert; ?>
 	</body>
 </html>
