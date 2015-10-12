@@ -212,6 +212,7 @@
 				$sched[$dayname][$h.'h']=[];
 				$sched[$dayname][$h.'h30']=[];
 			}
+			$sched[$dayname]['date']=false;
 		}
 
 		// Parsing du document html
@@ -286,6 +287,7 @@
 							if(array_key_exists('day',$data) && array_key_exists('daynumber',$data) && array_key_exists('month',$data) && array_key_exists('year',$data) && array_key_exists('beginhour',$data) && array_key_exists('endhour',$data) && array_key_exists('professor',$data) && array_key_exists('classroom',$data)) {
 								$data['id']=md5(json_encode($data));
 								array_push($plain_sched[$fr_en_day[$data['day']]],$data);
+								if($sched[$fr_en_day[$data['day']]]['date']===false) $sched[$fr_en_day[$data['day']]]['date']=$data['day'].' '.$data['daynumber'].' '.$data['month'].' '.$data['year'];
 							}
 						}
 					}
@@ -313,10 +315,12 @@
 
 		// Correspondance anglais/français des jours
 		$fr_en_day=fr_en_day('fr');
-
+		
 		$max_colspan=1;
 		foreach($daydata as $kh=>$vh) if(count($vh)>$max_colspan) $max_colspan=count($vh);
 		$max_colspan++;
+		
+		unset($daydata['date']);
 
 		$html_table='<table><tr><td colspan="'.$max_colspan.'">'.$fr_en_day[$dayname].'</td></tr>';
 		foreach($daydata as $kh=>$vh) {

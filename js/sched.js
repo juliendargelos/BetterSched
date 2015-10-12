@@ -27,7 +27,7 @@ var swipe={
 		var newPosition=swipe.elementInit.x+(swipe.touchPosition.x-swipe.touchInit.x)*deltaX;
 		if(newPosition<swipe.elementInit.x-swipe.wPages) newPosition=swipe.elementInit.x-swipe.wPages;
 		else if(newPosition>swipe.elementInit.x+swipe.wPages) newPosition=swipe.elementInit.x+swipe.wPages;
-		if((Math.abs(swipe.touchPosition.y-swipe.touchLast.y)<=2 || swipe.swipping) && newPosition<=0 && newPosition>=-(swipe.nPages-1)*swipe.wPages) {
+		if((Math.abs(swipe.touchPosition.y-swipe.touchLast.y)<=3 || swipe.swipping) && newPosition<=0 && newPosition>=-(swipe.nPages-1)*swipe.wPages) {
 			swipe.elementPosition.x=newPosition;
 			swipe.touchLast=swipe.touchPosition;
 			if(!swipe.swipping) swipe.swipping=true;
