@@ -1,10 +1,4 @@
 <?php
-	// Nom d'utilisateur pour la connexion
-	define('SIGNIN_USERNAME','pbonneau');
-	
-	// Mot de passe pour la connexion
-	define('SIGNIN_PASSWORD','123');
-	
 	// URL du script de connexion
 	define('SIGNIN_URL','http://syrah.iut.u-bordeaux3.fr/gpu/sat/index.php?page_param=accueilsatellys.php&cat=0&numpage=1&niv=0&clef=/');
 	
