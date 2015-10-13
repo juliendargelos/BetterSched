@@ -114,6 +114,7 @@ body {
 	}
 
 	#sched > td table tr td table tr td.block, #sched > td table tr td table tr:nth-child(2n) td.block {
+		height:100%;
 		padding:0;
 		border-right:2px solid rgb(250,250,250);
 		border-top:2px solid rgb(235,235,235);

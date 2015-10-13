@@ -53,7 +53,17 @@
 							<label for="input-week">Semaine</label>
 							<select id="input-week" name="week">
 								<?php
-									for($w=1; $w<=53; $w++) echo '<option value="'.$w.'"'.($param['week']==$w ? ' selected' : '').'>'.$w.'</option>';
+									for($w=1; $w<=53; $w++) {
+										$d=[
+											'begin'=>date(datetime::ISO8601,strtotime(($w<38 ? '2016' : '2015').'W'.($w<10 ? '0'.$w : $w))),
+											'end'=>date(datetime::ISO8601,strtotime(($w<38 ? '2016' : '2015').'W'.($w<10 ? '0'.$w : $w).'7'))
+										];
+										$d=[
+											'begin'=>substr($d['begin'],8,2).'/'.substr($d['begin'],5,2).'/'.substr($d['begin'],2,2),
+											'end'=>substr($d['end'],8,2).'/'.substr($d['end'],5,2).'/'.substr($d['end'],2,2)
+										];
+										echo '<option value="'.$w.'"'.($param['week']==$w ? ' selected' : '').'>'.$w.' ('.$d['begin'].' → '.$d['end'].')</option>';
+									}
 								?>
 							</select>
 						</div>
