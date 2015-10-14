@@ -11,7 +11,7 @@
 	<form class="formCo" method="POST" action="/login">
 		<div class="formElement formElement1">
 			<label for="id">Identifiant :</label>
-			<input type="text" name="id" class="inputText" placeholder=""/>
+			<input type="text" name="id" class="inputText" placeholder=""/ autofocus>
 		</div>
 		<div class="formElement formElement2">
 			<label for="mdp">Mot de passe :</label>
