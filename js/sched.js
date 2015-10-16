@@ -53,7 +53,7 @@ var swipe={
 
 window.onscroll=function() {
 	if(document.body.scrollTop>=260) document.getElementById('date').className='show';
-	else document.getElementById('date').className='';
+	else if(document.getElementById('date').className=='show') document.getElementById('date').className='';
 }
 
 for(var i=0; i<document.getElementById('input').getElementsByTagName('select').length; i++) {

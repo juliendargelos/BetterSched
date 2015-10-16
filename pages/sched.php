@@ -6,6 +6,7 @@
 	$param=new Param;
 	$betterSched=new BetterSched;
 	$table=new Table;
+	$languages=new Languages;
 	
 	// Définition des paramètres et chargement de l'emploi du temps
 	$betterSched->user->username=$session->username;
@@ -88,7 +89,7 @@
 						echo '<div id="day-sched" class="'.$param->data['day'].'">';
 						echo '<div ontouchstart="swipe.start(event);" ontouchmove="swipe.move(event);" ontouchend="swipe.end(event);">';
 						foreach($betterSched->data as $dayname=>$daydata) {
-							echo '<div class="day d-'.$dayname.'" data-date="'.$daydata['date'].'">'.$table->day[$dayname].'</div>';
+							echo '<div class="day d-'.$dayname.'" data-date="'.($daydata['date']!==false ? $daydata['date'] : $languages->fr[$dayname]).'">'.$table->day[$dayname].'</div>';
 						}
 						echo '</div></div>';
 					?>
