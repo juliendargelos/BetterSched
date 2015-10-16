@@ -7,20 +7,20 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-		
-		<meta name="msapplication-TileColor" content="#e74c3c">
-		<meta name="msapplication-TileImage" content="app/mstile-144x144.png">
 
 		<title>BetterSched'</title>
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<?php if(substr(PAGE,-9)=='sched.php') echo '<link rel="stylesheet" type="text/css" href="css/sched.css">'; ?>
+		
+		<meta name="msapplication-TileColor" content="#e74c3c">
+		<meta name="msapplication-TileImage" content="app/mstile-144x144.png">
 		
 		<link href="app/startup-1242x2148.png" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image">
 		<link href="app/startup-750x1294.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
 		<link href="app/startup-640x1096.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
 		<link href="app/startup-640x920.png" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
 		<link href="app/startup-320x460.png" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
-
+		
 		<link rel="icon" type="image/png" href="app/favicon-192x192.png" sizes="192x192">
 		<link rel="icon" type="image/png" href="app/favicon-160x160.png" sizes="160x160">
 		<link rel="icon" type="image/png" href="app/favicon-96x96.png" sizes="96x96">
