@@ -2,7 +2,7 @@
 ----
 *Projet mené par [Paul Bonneau](https://github.com/paulbonneau) et [Julien Dargelos](https://github.com/juliendargelos).*
 
-BetterSched' a pour objectif de proposer une interface plus soignée et ergonomique aux étudiants de l'IUT Bordeaux Montaigne qui veulent consulter leur emploi du temps.
+BetterSched' a pour objectif de proposer une interface plus soignée et ergonomique aux étudiants de l'IUT Bordeaux Montaigne qui souhaitent consulter leur emploi du temps.
 
 [Accéder au site](http://www.bettersched.cf)
 
