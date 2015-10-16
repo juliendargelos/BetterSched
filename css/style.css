@@ -1,3 +1,17 @@
+/*CHARGEMENT DES POLICES*/
+@font-face {
+  font-family: Roboto;
+  src:url('../medias/fonts/Roboto/Roboto-Light.otf');
+}
+@font-face {
+  font-family: Roboto Thin;
+  src:url('../medias/fonts/Roboto/Roboto-Thin.otf');
+}
+@font-face {
+  font-family: Lobster Two;
+  src:url('../medias/fonts/LobsterTwo/LobsterTwo-Bold.otf');
+}
+
 /*RESET*/
 html,body{
   margin: 0;
@@ -15,7 +29,7 @@ html {
     color: #FFF;
 }
 body {
-    margin: 0 0 80px; /* bottom = footer height */
+    margin: 0 0 80px;
     background-color: #e74c3c;
     font-family: Roboto;
 }
@@ -45,14 +59,23 @@ li a{
 	font-size:14px;
 	color:#e74c3c;
 	text-align:center;
+	-webkit-animation:result 3s 1;
 	animation:result 3s 1;
 }
 
 #result.hidden {
+	-webkit-animation:result-out 0.3s 1;
 	animation:result-out 0.3s 1;
 }
 
 @keyframes result {
+	0% {top:-50px;}
+	6% {top:0;}
+	94% {top:0;}
+	100% {top:-50px;}
+}
+
+@-webkit-keyframes result {
 	0% {top:-50px;}
 	6% {top:0;}
 	94% {top:0;}
@@ -64,6 +87,11 @@ li a{
 	100% {top:-50px;}
 }
 
+@-webkit-keyframes result-out {
+	0% {top:0;}
+	100% {top:-50px;}
+}
+
 /*MISE EN FORME GENERAL DES BOUTON*/
 .button{
   background-color: transparent;
@@ -71,7 +99,7 @@ li a{
   border :2px #FFF solid;
   text-align: center;
   border-radius: 4px;
-  transition: color 0.35s, border-radius 0.35s, background-color 0.35s, border-color 0.35s;
+  transition: color 0.3s, background-color 0.3s;
   color:#FFF;
   -webkit-appearance:none;
 }
@@ -80,7 +108,6 @@ li a{
   background-color: #FFF;
   text-align: center;
   color:#E74C3C;
-  transition: color 0.35s, border-radius 0.35s, background-color 0.35s, border-color 0.35s;
   cursor: pointer;
 }
 
@@ -104,40 +131,17 @@ button{
 
 
 input[type="text"],input[type="password"]{
-  display: inline-block;
-  margin: 0 auto;
-  height: 2rem;
   background-color: #FFF;
-  border: 2px solid #FFF;
   color : #e74c3c;
   font-size: 0.85rem;
   outline: none;
-  width: 130px;
-  padding-left: 0.5rem;
+  padding:17px 17px 17px 7px;
+  margin:0;
+  border:none;
   -webkit-appearance:none;
 }
 
 /*GENERAL*/
-
-/*CHARGEMENT DES POLICES*/
-@font-face {
-  font-family: Roboto;
-  src:url('../medias/fonts/Roboto/Roboto-Light.ttf');
-}
-@font-face {
-  font-family: Roboto Medium;
-  src:url('../medias/fonts/Roboto/Roboto-Medium.ttf');
-}
-@font-face {
-  font-family: Roboto Thin;
-  src:url('../medias/fonts/Roboto/Roboto-Thin.ttf');
-}
-@font-face {
-  font-family: Lobster Two;
-  src:url('../medias/fonts/Lobster_Two/LobsterTwo-Regular.ttf');
-}
-
-
 
 /*ANIMATION*/
 
@@ -216,11 +220,13 @@ input[type="text"],input[type="password"]{
 h1{
   font-family: Lobster Two;
   font-size: 3.5rem;
+  height:70px;
   margin-bottom: 2px;
 }
 
 h2{
   width:250px;
+  height:44px;
   margin: 5px auto;
   font-size: 1.15rem;
   font-weight: 100;
@@ -228,37 +234,41 @@ h2{
   font-family: Roboto Thin;
 }
 
-.formCo .button{
+.formCo .buttonCo{
   width: 100%;
+  margin:0;
   border-radius: 0 0 10px 10px;
   border :3px solid #FFF;
-  border-top: 0 solid transparent;
+  border-top:none;
   font-size: 0.9rem;
   padding: 15px;
   background-color:#e74c3c;
   color:#FFF;
-
-
+  cursor: pointer;
+  transition:background-color 0.3s;
+  -webkit-appearance:none;
+  text-align: center;
 }
 
-.formCo .button:hover{
-  border-top: 0 solid transparent;
+.formCo .buttonCo:hover, .buttonCo.touch{
   background-color: rgba(231, 76, 60, 0.72);
 }
 
+.formCo .buttonCo.touch {transition:none;}
+
+.inputCo {
+	width:100%;
+	padding:0 17px;
+	box-sizing:border-box;
+}
+
 .formElement{
-  width: 85%;
-  margin: 0 auto;
-  padding: 4px;
+  width: 100%;
+  height:52px;
+  box-sizing:border-box;
   text-align: left;
-}
-
-.formElement1{
-  padding-top: 0.5rem;
-}
-
-.formElement2{
-  margin-bottom: 0.25rem;
+  font-size:0;
+  vertical-align:top;
 }
 
 .formElement+.formElement{
@@ -270,16 +280,17 @@ h2{
   color: #e74c3c;
   font-size: 0.85rem;
   display: inline-block;
-  width: 90px;
-  padding-bottom: 0.15rem;
+  padding:17px 0 17px 17px;
   box-sizing: border-box;
 }
 
-.formElement1 label {width:69px;}
-.formElement2 label {width:90px;}
+.formCo label:after {content:':';}
 
-.formElement1 input {width:160px;}
-.formElement2 input {width:140px;}
+.formElement1 label {width:85px;}
+.formElement2 label {width:107px;}
+
+.formElement1 input {width:153px;}
+.formElement2 input {width:131px;}
 
 
 /*PAGE APROPOS*/
@@ -307,17 +318,6 @@ section#teamContainer{
 
 
 }
-
-/*.buttonApropos::before{
-  content:"\A";
-  border-style: solid;
-
-  border-width: 15px 15px 15px 0px;
-  border-color: transparent #FFF transparent transparent;
-  position: absolute;
-  left: -15px;
-  top: -2px;
-}*/
 
 .titreapropos{
 
@@ -378,14 +378,14 @@ padding-bottom: 40px;
 
 
 .linkedin{
-  background-image: url("../medias/linkedin.png");
+  background-image: url("../medias/social-linkedin.png");
   height: 30px;
   width: 30px;
   background-size: cover;
 
 }
 .linkedin:hover{
-  background-image: url("../medias/linkedinHover.png");
+  background-image: url("../medias/social-linkedin-hover.png");
   height: 30px;
   width: 30px;
   background-size: cover;
@@ -471,20 +471,20 @@ height: 40px;
 }
 
 .facebook{
-  background-image: url("../medias/facebook.png");
+  background-image: url("../medias/social-facebook.png");
   background-size: cover;
 }
 .github{
-  background-image: url("../medias/github.png");
+  background-image: url("../medias/social-github.png");
   background-size: cover;
 }
 .twitter{
-  background-image: url("../medias/twitter.png");
+  background-image: url("../medias/social-twitter.png");
   background-size: cover;
   margin-right: 0;
 }
 .apropos{
-  background-image: url("../medias/apropos.png");
+  background-image: url("../medias/social-about.png");
   background-size: cover;
   display: inline-block;
   margin-right: 10px;
@@ -493,28 +493,28 @@ height: 40px;
 
 }
 .facebook:hover{
-  background-image: url("../medias/facebookHover.png");
+  background-image: url("../medias/social-facebook-hover.png");
   background-size: cover;
   -webkit-transition: background-image 0.15s;
   -o-transition: background-image 0.15s;
   transition: background-image 0.15s;
 }
 .twitter:hover{
-  background-image: url("../medias/twitterHover.png");
+  background-image: url("../medias/social-twitter-hover.png");
   background-size: cover;
   -webkit-transition: background-image 0.15s;
   -o-transition: background-image 0.15s;
   transition: background-image 0.15s;
 }
 .github:hover{
-  background-image: url("../medias/githubHover.png");
+  background-image: url("../medias/social-github-hover.png");
   background-size: cover;
   -webkit-transition: background-image 0.15s;
   -o-transition: background-image 0.15s;
   transition: background-image 0.15s;
 }
 .apropos:hover{
-  background-image: url("../medias/aproposHover.png");
+  background-image: url("../medias/social-about-hover.png");
   background-size: cover;
   display: inline-block;
   margin-right: 10px;

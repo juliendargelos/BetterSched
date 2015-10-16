@@ -1,9 +1,3 @@
-<?php
-	if(!defined('INCLUDE')) {
-		header('location: /');
-		exit;
-	}
-?>
 <!DOCTYPE html>
 <html lang="fr" class="">
 	<head>
@@ -11,9 +5,21 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		<meta name="format-detection" content="telephone=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
-
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		
 		<meta name="msapplication-TileColor" content="#e74c3c">
 		<meta name="msapplication-TileImage" content="mstile-144x144.png">
+
+		<title>BetterSched'</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<?php if(substr(PAGE,-9)=='sched.php') echo '<link rel="stylesheet" type="text/css" href="css/sched.css">'; ?>
+		
+		<link href="startup-1242x2148" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image">
+		<link href="startup-750x1294" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+		<link href="startup-640x1096" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+		<link href="startup-640x920" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+		<link href="startup-320x460" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
 
 		<link rel="icon" type="image/png" href="favicon-192x192.png" sizes="192x192">
 		<link rel="icon" type="image/png" href="favicon-160x160.png" sizes="160x160">
@@ -26,15 +32,15 @@
 		<link rel="apple-touch-icon-precomposed" sizes="120x120" href="apple-touch-icon-120x120.png">
 		<link rel="apple-touch-icon-precomposed" sizes="152x152" href="apple-touch-icon-152x152.png">
 		<link rel="apple-touch-icon-precomposed" sizes="180x180" href="apple-touch-icon-180x180.png">
-
-		<title>BetterSched'</title>
-		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<?php if(substr(PAGE,-9)=='sched.php') echo '<link rel="stylesheet" type="text/css" href="css/sched.css">'; ?>
+		
+		<link rel="manifest" href="manifest.json">
+		
+		<script type="text/javascript" src="js/piwik.js"></script>
 	</head>
 	<body>
 		<?php
-			if(isset($_SESSION['result'])) {
-				echo '<div id="result" onclick="this.className=\'hidden\';" ontouchstart="this.className=\'hidden\';">'.$_SESSION['result'].'</div>';
-				unset($_SESSION['result']);
+			if($session->result!=null) {
+				echo '<div id="result" onclick="this.className=\'hidden\';" ontouchstart="this.className=\'hidden\';">'.$session->result.'</div>';
+				$session->remove('result');
 			}
 		?>

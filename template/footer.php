@@ -1,9 +1,3 @@
-<?php
-	if(!defined('INCLUDE')) {
-		header('location: /');
-		exit;
-	}
-?>
 		<footer>
 			<div class="socialContainer">
 				<a href="https://www.facebook.com/bettersched"><div class="facebook social"></div></a>

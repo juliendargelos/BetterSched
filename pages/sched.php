@@ -1,30 +1,38 @@
 <?php
-	if(!defined('INCLUDE') || !session_check()) {
-		header('location: /');
-		exit;
+	// Vérfication de l'existence d'une session
+	if(!$session->check()) header('location: /');
+	
+	// Instanciation des classes
+	$param=new Param;
+	$betterSched=new BetterSched;
+	$table=new Table;
+	
+	// Définition des paramètres et chargement de l'emploi du temps
+	$betterSched->user->username=$session->username;
+	$betterSched->user->password=$session->password;
+	$betterSched->week=$param->data['week'];
+	$betterSched->group=$param->data['group'];
+	$betterSched->year=$param->data['year'];
+	$betterSched->get();
+	
+	// Chargement des données de l'emploi du temps dans le constructeur de tableau
+	$table->data=$betterSched->data;
+	
+	$alert='';
+	if($session->result!=null) {
+		$alert.='<script type="text/javascript">';
+		$alert.='	setTimeout(function(){';
+		$alert.='		if(window.innerWidth<=600) {';
+		$alert.='			document.getElementById(\'result\').parentNode.removeChild(document.getElementById(\'result\'));';
+		$alert.='			document.body.insertAdjacentHTML(\'afterBegin\',\'<div id="result">Swippez pour passer d\\\'un jour à un autre.</div>\');';
+		$alert.='		}';
+		$alert.='	},3100);';
+		$alert.='</script>';
 	}
-	date_default_timezone_set('Europe/Paris');
-	$days=fr_en_day('fr');
-	$default=[
-		'group'=>'MMI',
-		'year'=>1,
-		'week'=>date('W'),
-		'day'=>strtolower(date('l'))
-	];
-	$param=[];
-	foreach($default as $key=>$p) $param[$key]=isset($_POST[$key]) ? (is_numeric($p) ? intval($_POST[$key]) : $_POST[$key]) : $p;
-	$sched=get_sched($param['group'],$param['year'],$param['week']);
-	if($sched===false) {
-		$param=$default;
-		$sched=get_sched($param['group'],$param['year'],$param['week']);
-	}
-?>
-<?php
-	$alert=isset($_SESSION['result']) ? '<script type="text/javascript">setTimeout(function(){if(window.innerWidth<=600){document.getElementById(\'result\').parentNode.removeChild(document.getElementById(\'result\'));document.body.insertAdjacentHTML(\'afterBegin\',\'<div id="result">Swippez pour passer d\\\'un jour à un autre.</div>\');}},3100);</script>' : ''; 
 ?>
 <?php include('template/header.php'); ?>
 		<div id="date">
-			<?php echo $sched[$param['day']]['date']; ?>
+			<?php echo $betterSched->data[$param->data['day']]['date']; ?>
 		</div>
 		<header>
 			<a href="/about"><button type="button" name="button" class="button buttonApropos">À propos</button></a>
@@ -37,16 +45,16 @@
 						<div>
 							<label for="input-group">Groupe</label>
 							<select id="input-group" name="group">
-								<option value="MMI"<?php echo $param['group']=='MMI' ? ' selected' : ''; ?>>MMI</option>
-								<option value="PUB"<?php echo $param['group']=='PUB' ? ' selected' : ''; ?>>PUB</option>
-								<option value="LP"<?php echo $param['group']=='LP' ? ' selected' : ''; ?>>LP</option>
+								<option value="MMI"<?php echo $param->data['group']=='MMI' ? ' selected' : ''; ?>>MMI</option>
+								<option value="PUB"<?php echo $param->data['group']=='PUB' ? ' selected' : ''; ?>>PUB</option>
+								<option value="LP"<?php echo $param->data['group']=='LP' ? ' selected' : ''; ?>>LP</option>
 							</select>
 						</div>
 						<div>
 							<label for="input-year">Année</label>
 							<select id="input-year" name="year">
-								<option value="1"<?php echo $param['year']==1 ? ' selected' : ''; ?>>1A</option>
-								<option value="2"<?php echo $param['year']==2 ? ' selected' : ''; ?>>2A</option>
+								<option value="1"<?php echo $param->data['year']==1 ? ' selected' : ''; ?>>1A</option>
+								<option value="2"<?php echo $param->data['year']==2 ? ' selected' : ''; ?>>2A</option>
 							</select>
 						</div>
 						<div>
@@ -62,7 +70,7 @@
 											'begin'=>substr($d['begin'],8,2).'/'.substr($d['begin'],5,2).'/'.substr($d['begin'],2,2),
 											'end'=>substr($d['end'],8,2).'/'.substr($d['end'],5,2).'/'.substr($d['end'],2,2)
 										];
-										echo '<option value="'.$w.'"'.($param['week']==$w ? ' selected' : '').'>'.$w.' ('.$d['begin'].' → '.$d['end'].')</option>';
+										echo '<option value="'.$w.'"'.($param->data['week']==$w ? ' selected' : '').'>'.$w.' ('.$d['begin'].' → '.$d['end'].')</option>';
 									}
 								?>
 							</select>
@@ -76,10 +84,11 @@
 			<tr id="sched">
 				<td>
 					<?php
-						echo '<div id="full-sched">'.sched_to_htmltable($sched).'</div>';
-						echo '<div id="day-sched" class="'.$param['day'].'"><div ontouchstart="swipe.start(event);" ontouchmove="swipe.move(event);" ontouchend="swipe.end(event);">';
-						foreach($sched as $dayname=>$daydata) {
-							echo '<div class="day d-'.$dayname.'" data-date="'.$daydata['date'].'">'.daydata_to_htmltable($dayname,$daydata).'</div>';
+						echo '<div id="full-sched">'.$table->week.'</div>';
+						echo '<div id="day-sched" class="'.$param->data['day'].'">';
+						echo '<div ontouchstart="swipe.start(event);" ontouchmove="swipe.move(event);" ontouchend="swipe.end(event);">';
+						foreach($betterSched->data as $dayname=>$daydata) {
+							echo '<div class="day d-'.$dayname.'" data-date="'.$daydata['date'].'">'.$table->day[$dayname].'</div>';
 						}
 						echo '</div></div>';
 					?>

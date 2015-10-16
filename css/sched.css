@@ -2,6 +2,9 @@ html {height:100%;}
 
 body {
 	background:#e74c3c;
+	background-image:-webkit-linear-gradient(bottom,transparent 0,transparent 50%,rgb(250,250,250) 50%);
+	background-image:linear-gradient(to bottom,transparent 0,transparent 50%,rgb(250,250,250) 50%);
+	background-attachment:fixed;
 	height:100%;
 	margin:0;
 }

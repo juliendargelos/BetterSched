@@ -55,3 +55,9 @@ window.onscroll=function() {
 	if(document.body.scrollTop>=260) document.getElementById('date').className='show';
 	else document.getElementById('date').className='';
 }
+
+for(var i=0; i<document.getElementById('input').getElementsByTagName('select').length; i++) {
+	document.getElementById('input').getElementsByTagName('select')[i].onchange=function() {
+		document.getElementById('input').getElementsByTagName('form')[0].submit();
+	}
+}

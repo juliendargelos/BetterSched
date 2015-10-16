@@ -1,9 +1,3 @@
-<?php
-	if(!defined('INCLUDE')) {
-		header('location: /');
-		exit;
-	}
-?>
 <?php include('template/header.php'); ?>
 <header>
 	<a href="/"><button type="button" name="button" class="button buttonApropos">Retour</button></a>
