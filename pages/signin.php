@@ -16,7 +16,7 @@
 				<input type="password" name="mdp" class="inputText" placeholder=""/>
 			</div>
 		</div>
-		<input type="submit"class="buttonCo" value="Valider" ontouchstart="this.className+=' touch';"/>
+		<input type="submit"class="buttonCo" value="Valider" ontouchstart="this.className+=' touch';" ontouchend="this.className=this.className.replace(/\s+touch/,'');"/>
 	</form>
 </div>
 <script src="js/script.js"></script>

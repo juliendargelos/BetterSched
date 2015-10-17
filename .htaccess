@@ -4,13 +4,12 @@ RewriteCond %{HTTP_HOST} !^.+\..+\..+$
 RewriteRule ^   http://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
 RewriteCond %{HTTP_HOST} !^analytics\.
+RewriteCond %{REQUEST_URI} !^/app/
 RewriteCond %{REQUEST_URI} !^/medias/
 RewriteCond %{REQUEST_URI} !^/js/
 RewriteCond %{REQUEST_URI} !^/css/
-RewriteCond %{REQUEST_URI} !apple-touch-icon-\d+x\d+.png$
 RewriteCond %{REQUEST_URI} !favicon.ico$
-RewriteCond %{REQUEST_URI} !favicon-\d+x\d+.png$
-RewriteCond %{REQUEST_URI} !ms-tile-\d+x\d+.png$
-RewriteCond %{REQUEST_URI} !browserconfig.xml$
 RewriteCond %{REQUEST_URI} !^/index.php$
 RewriteRule ^(.+) ?page=$1 [L]
+
+AddType text/cache-manifest .manifest

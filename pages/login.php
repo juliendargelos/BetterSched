@@ -5,3 +5,13 @@
 	}
 	header('location: /');
 ?>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="refresh" content="0; URL=/">
+		<title>Connexion</title>
+	<head>
+	<body style="background:#e74c3c;">
+	</body>
+</html>
