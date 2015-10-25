@@ -5,7 +5,8 @@
 		public $messages;
 		public $request;
 		public $user;
-		
+
+		// Authentification sur le serveur
 		public function signin() {
 			if(is_string($this->user->username) && is_string($this->user->username)) {
 				$this->request->close();
@@ -21,19 +22,20 @@
 			}
 			else return false;
 		}
-		
+
+		// Récupération de l'emploi du temps depuis le serveur
 		public function get_sched($week,$group) {
 			$this->request->param=[];
-			
+
 			// Requête vers la page GPU (actualisation des cookies)
 			$this->request->url=$this->files->gpu;
 			$this->request->exec();
-			
+
 			// Requête vers la page d'accueil de l'emploi du temps (actualisation des cookies + actualisation manuelle des cookies avec le groupe indiqué)
 			$this->request->url=$this->files->homesched;
 			$this->request->exec();
 			$this->request->handle->cookies.='filiere='.$group.';';
-	
+
 			// Récupération de l'emploi du temps
 			$this->request->param=[
 				'mode'=>'edt',
@@ -59,7 +61,7 @@
 			$this->request->close();
 			return $result;
 		}
-				
+
 		public function __construct() {
 			$this->files=new Files;
 			$this->messages=new Messages;

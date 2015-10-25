@@ -5,7 +5,8 @@
 		public $param=[];
 		public $handle=null;
 		private $output=null;
-		
+
+		// Envoi de la requête
 		public function exec() {
 			if(is_string($this->url) && is_array($this->param)) {
 				if($this->handle==null) {
@@ -22,22 +23,23 @@
 				}
 				curl_setopt($curl,CURLOPT_POSTFIELDS,$this->param);
 				curl_setopt($curl,CURLOPT_URL,$this->url);
-		
+
 				$output=curl_exec($curl);
-		
+
 				preg_match_all('#Set-Cookie: (.+?;)#',$output,$matches);
 				$cookies='';
 				foreach($matches[1] as $cookie) $cookies.=$cookie;
 				if($this->handle!=null) $cookies=$this->handle->cookies.$cookies;
-		
+
 				$this->handle=new Handle($curl,$cookies);
 				$this->output=$output;
-				
+
 				return true;
 			}
 			else return false;
 		}
-		
+
+		// Fermeture de la connexion
 		public function close() {
 			$this->url=null;
 			$this->param=[];
@@ -45,7 +47,7 @@
 			$this->handle=null;
 			$this->output=null;
 		}
-		
+
 		public function __get($output) {
 			return $output=='output' ? $this->output : null;
 		}

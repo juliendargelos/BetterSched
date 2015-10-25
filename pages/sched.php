@@ -19,6 +19,22 @@
 	// Chargement des données de l'emploi du temps dans le constructeur de tableau
 	$table->data=$betterSched->data;
 	
+	// HOLIDAAAAAYS
+	if($param->data['week']==44 && $param->data['group']=='MMI') {
+		$holidays=$betterSched->data;
+		$holidays['monday']['9h'][0]['content']='HOLIDAAAAAYS';
+		$holidays['monday']['9h'][0]['color']='#000 url(\'https://media.giphy.com/media/54Vj1kxvgyF4k/giphy.gif\') center 0 / 100% auto';
+		$holidays['tuesday']['9h'][0]['content']='HOLIDAAAAAYS';
+		$holidays['tuesday']['9h'][0]['color']='#000 url(\'https://media.giphy.com/media/9jEaPxN9eZWmI/giphy.gif\') center 0 / 100% auto';
+		$holidays['wednesday']['9h'][0]['content']='HOLIDAAAAAYS';
+		$holidays['wednesday']['9h'][0]['color']='#000 url(\'https://media.giphy.com/media/LkjlH3rVETgsg/giphy.gif\') center 0 / 100% auto';
+		$holidays['thursday']['9h'][0]['content']='HOLIDAAAAAYS';
+		$holidays['thursday']['9h'][0]['color']='#000 url(\'https://media.giphy.com/media/6VoogvRSXUaAM/giphy.gif\') center 0 / 100% auto';
+		$holidays['friday']['9h'][0]['content']='HOLIDAAAAAYS';
+		$holidays['friday']['9h'][0]['color']='#000 url(\'https://media.giphy.com/media/XWeJDaxYa1YrK/giphy.gif\') center 0 / 100% auto';
+		$table->data=$holidays;
+	}
+	
 	$alert='';
 	if($session->result!=null) {
 		$alert.='<script type="text/javascript">';
