@@ -51,7 +51,7 @@
 		public function week($data) {
 			$html_table='<table><tr>';
 			foreach($data as $day=>$daydata) {
-				$html_table.='<td>'.$this->day($day,$daydata).'</td>';
+				$html_table.='<td><div>'.$this->day($day,$daydata).'</div></td>';
 			}
 			$html_table.='</tr></table>';
 
