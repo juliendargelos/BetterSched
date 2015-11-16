@@ -85,12 +85,15 @@
 								// Conditions de suppression d'éléments en fonctions du TD/TP et du groupe (MMI Seulement)
 								$tdtp_cond=[
 									$this->group!='MMI',
-									$this->td==0 || $this->tp==0,
+									$this->td>2 && $this->year==1,
+									$this->tp>3 && $this->year==1,
+									$this->td<3 && $this->year==2,
+									$this->tp<4 && $this->year==2,
 									!preg_match('#\bTD\s*\d\b#',$data['content']) || preg_match('#\bTD\s*'.preg_quote($this->td).'\b#',$data['content']),
 									!preg_match('#\bTP\s*\d\b#',$data['content']) || preg_match('#\bTP\s*'.preg_quote($this->tp).'\b#',$data['content'])
 									
 								];
-								if($tdtp_cond[0] || $tdtp_cond[1] || ($tdtp_cond[2] && $tdtp_cond[3])) {
+								if($tdtp_cond[0] || $tdtp_cond[1] || $tdtp_cond[2] || $tdtp_cond[3] || $tdtp_cond[4] || ($tdtp_cond[5] && $tdtp_cond[6])) {
 									$h=$h->item(0)->getElementsByTagName('tr');
 									for($k=1; $k<$h->length; $k++) {
 										$d=$h->item($k)->getElementsByTagName('td');
