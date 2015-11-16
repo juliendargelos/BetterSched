@@ -8,6 +8,8 @@
 		public function __construct() {
 			$default=[
 				'group'=>['value'=>'MMI','numeric'=>false,'cookie'=>true],
+				'td'=>['value'=>1,'numeric'=>true,'cookie'=>true],
+				'tp'=>['value'=>1,'numeric'=>true,'cookie'=>true],
 				'year'=>['value'=>1,'numeric'=>true,'cookie'=>true],
 				'week'=>['value'=>intval(date('W')),'numeric'=>true,'cookie'=>false],
 				'day'=>['value'=>strtolower(date('l')),'numeric'=>false,'cookie'=>false]

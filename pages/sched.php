@@ -13,6 +13,8 @@
 	$betterSched->user->password=$session->password;
 	$betterSched->week=$param->data['week'];
 	$betterSched->group=$param->data['group'];
+	$betterSched->td=$param->data['td'];
+	$betterSched->tp=$param->data['tp'];
 	$betterSched->year=$param->data['year'];
 	$betterSched->get();
 	
@@ -90,6 +92,21 @@
 										echo '<option value="'.$w.'"'.($param->data['week']==$w ? ' selected' : '').'>'.$w.' ('.$d['begin'].' → '.$d['end'].')</option>';
 									}
 								?>
+							</select>
+						</div>
+						<div id="field-td" <?php if($param->data['group']=='MMI') echo 'class="visible"'; ?>>
+							<label for="input-td">Groupe de TD</label>
+							<select id="input-td" name="td">
+								<option value="1"<?php echo $param->data['td']==1 ? ' selected' : ''; ?>>TD1</option>
+								<option value="2"<?php echo $param->data['td']==2 ? ' selected' : ''; ?>>TD2</option>
+							</select>
+						</div>
+						<div id="field-tp" <?php if($param->data['group']=='MMI') echo 'class="visible"'; ?>>
+							<label for="input-tp">Groupe de TP</label>
+							<select id="input-tp" name="tp">
+								<option value="1"<?php echo $param->data['tp']==1 ? ' selected' : ''; ?>>TP1</option>
+								<option value="2"<?php echo $param->data['tp']==2 ? ' selected' : ''; ?>>TP2</option>
+								<option value="3"<?php echo $param->data['tp']==3 ? ' selected' : ''; ?>>TP3</option>
 							</select>
 						</div>
 						<div>

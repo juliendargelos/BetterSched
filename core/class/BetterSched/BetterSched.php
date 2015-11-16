@@ -4,6 +4,8 @@
 		public $user;
 		public $week;
 		public $group;
+		public $td;
+		public $tp;
 		public $year;
 		public $languages;
 		private $semester=[
@@ -39,7 +41,7 @@
 			return array_key_exists($color,$color_nColor) ? $color_nColor[$color] : $color;
 		}
 		
-		private function parse($plain_data) {	
+		private function parse($plain_data) {
 			// Tableau brut de l'emploi du temps
 			$plain_sched=$this->sched->plain;
 	
@@ -80,44 +82,53 @@
 								$content=preg_replace('#informatio$#','information',$content);
 								// Majuscule à la première lettre et enregistrement
 								$data['content']=ucfirst($content);
-								$h=$h->item(0)->getElementsByTagName('tr');
-								for($k=1; $k<$h->length; $k++) {
-									$d=$h->item($k)->getElementsByTagName('td');
-									if($d->length>=2) {
-										$key=$d->item(0)->nodeValue;
-										$value=$d->item(1)->nodeValue;
-										// Récupération de la date
-										if(preg_match('#^\s*(lundi|mardi|mercredi|jeudi|vendredi|samedi)\s+(\d+)\s+(janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)\s+(\d+)\s*$#i',$value,$match)) {
-											$data['day']=$match[1];
-											$data['daynumber']=$match[2];
-											$data['month']=$match[3];
-											$data['year']=$match[4];
-										}
-										// Récupération de l'heure
-										elseif(preg_match('#^\s*(\d+h\d+)\s+a\s+(\d+h\d+)\s*$#i',$value,$match)) {
-											$data['beginhour']=$match[1];
-											$data['endhour']=$match[2];
-										}
-										// Récupération des noms des enseignants
-										elseif(preg_match('#^\s*Enseignant\(s\)\s*$#',$key)) {
-											$professor=explode('-',preg_replace('#-+$#','',$value));
-											$data['professor']='';
-											foreach($professor as $p) $data['professor'].=strtoupper(substr($p,0,1)).'. '.ucfirst(strtolower(substr($p,1))).', ';
-											if($data['professor']=='. , ') $data['professor']=false;
-											else $data['professor']=substr($data['professor'],0,-2);
-										}
-										// Récupération du numéro de la salle
-										elseif(preg_match('#^\s*Salle\(s\)\s*$#',$key)) {
-											$data['classroom']=preg_replace('#-+$#','',$value);
-											if($data['classroom']=='') $data['classroom']=false;
+								// Conditions de suppression d'éléments en fonctions du TD/TP et du groupe (MMI Seulement)
+								$tdtp_cond=[
+									$this->group!='MMI',
+									!preg_match('#\bTD\s*\d\b#',$data['content']) || preg_match('#\bTD\s*'.preg_quote($this->td).'\b#',$data['content']),
+									!preg_match('#\bTP\s*\d\b#',$data['content']) || preg_match('#\bTP\s*'.preg_quote($this->tp).'\b#',$data['content'])
+									
+								];
+								if($tdtp_cond[0] || ($tdtp_cond[1] && $tdtp_cond[2])) {
+									$h=$h->item(0)->getElementsByTagName('tr');
+									for($k=1; $k<$h->length; $k++) {
+										$d=$h->item($k)->getElementsByTagName('td');
+										if($d->length>=2) {
+											$key=$d->item(0)->nodeValue;
+											$value=$d->item(1)->nodeValue;
+											// Récupération de la date
+											if(preg_match('#^\s*(lundi|mardi|mercredi|jeudi|vendredi|samedi)\s+(\d+)\s+(janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)\s+(\d+)\s*$#i',$value,$match)) {
+												$data['day']=$match[1];
+												$data['daynumber']=$match[2];
+												$data['month']=$match[3];
+												$data['year']=$match[4];
+											}
+											// Récupération de l'heure
+											elseif(preg_match('#^\s*(\d+h\d+)\s+a\s+(\d+h\d+)\s*$#i',$value,$match)) {
+												$data['beginhour']=$match[1];
+												$data['endhour']=$match[2];
+											}
+											// Récupération des noms des enseignants
+											elseif(preg_match('#^\s*Enseignant\(s\)\s*$#',$key)) {
+												$professor=explode('-',preg_replace('#-+$#','',$value));
+												$data['professor']='';
+												foreach($professor as $p) $data['professor'].=strtoupper(substr($p,0,1)).'. '.ucfirst(strtolower(substr($p,1))).', ';
+												if($data['professor']=='. , ') $data['professor']=false;
+												else $data['professor']=substr($data['professor'],0,-2);
+											}
+											// Récupération du numéro de la salle
+											elseif(preg_match('#^\s*Salle\(s\)\s*$#',$key)) {
+												$data['classroom']=preg_replace('#-+$#','',$value);
+												if($data['classroom']=='') $data['classroom']=false;
+											}
 										}
 									}
-								}
-								// Remplissage du tableau de l'emploi du temps avec les données récupérées
-								if(array_key_exists('day',$data) && array_key_exists('daynumber',$data) && array_key_exists('month',$data) && array_key_exists('year',$data) && array_key_exists('beginhour',$data) && array_key_exists('endhour',$data) && array_key_exists('professor',$data) && array_key_exists('classroom',$data)) {
-									$data['id']=md5(json_encode($data));
-									array_push($plain_sched[$this->languages->en[$data['day']]],$data);
-									if($sched[$this->languages->en[$data['day']]]['date']===false) $sched[$this->languages->en[$data['day']]]['date']=$data['day'].' '.$data['daynumber'].' '.$data['month'].' '.$data['year'];
+									// Remplissage du tableau de l'emploi du temps avec les données récupérées
+									if(array_key_exists('day',$data) && array_key_exists('daynumber',$data) && array_key_exists('month',$data) && array_key_exists('year',$data) && array_key_exists('beginhour',$data) && array_key_exists('endhour',$data) && array_key_exists('professor',$data) && array_key_exists('classroom',$data)) {
+										$data['id']=md5(json_encode($data));
+										array_push($plain_sched[$this->languages->en[$data['day']]],$data);
+										if($sched[$this->languages->en[$data['day']]]['date']===false) $sched[$this->languages->en[$data['day']]]['date']=$data['day'].' '.$data['daynumber'].' '.$data['month'].' '.$data['year'];
+									}
 								}
 							}
 						}
