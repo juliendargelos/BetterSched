@@ -97,16 +97,29 @@
 						<div id="field-td" <?php if($param->data['group']=='MMI') echo 'class="visible"'; ?>>
 							<label for="input-td">Groupe de TD</label>
 							<select id="input-td" name="td">
-								<option value="1"<?php echo $param->data['td']==1 ? ' selected' : ''; ?>>TD1</option>
-								<option value="2"<?php echo $param->data['td']==2 ? ' selected' : ''; ?>>TD2</option>
+								<?php if($param->data['year']==1) { ?>
+									<option value="1"<?php echo $param->data['td']==1 ? ' selected' : ''; ?>>TD1</option>
+									<option value="2"<?php echo $param->data['td']==2 ? ' selected' : ''; ?>>TD2</option>
+								<?php } ?>
+								<?php if($param->data['year']==2) { ?>
+									<option value="3"<?php echo $param->data['td']==3 ? ' selected' : ''; ?>>TD3</option>
+									<option value="4"<?php echo $param->data['td']==4 ? ' selected' : ''; ?>>TD4</option>
+								<?php } ?>
 							</select>
 						</div>
 						<div id="field-tp" <?php if($param->data['group']=='MMI') echo 'class="visible"'; ?>>
 							<label for="input-tp">Groupe de TP</label>
 							<select id="input-tp" name="tp">
-								<option value="1"<?php echo $param->data['tp']==1 ? ' selected' : ''; ?>>TP1</option>
-								<option value="2"<?php echo $param->data['tp']==2 ? ' selected' : ''; ?>>TP2</option>
-								<option value="3"<?php echo $param->data['tp']==3 ? ' selected' : ''; ?>>TP3</option>
+								<?php if($param->data['year']==1) { ?>
+									<option value="1"<?php echo $param->data['tp']==1 ? ' selected' : ''; ?>>TP1</option>
+									<option value="2"<?php echo $param->data['tp']==2 ? ' selected' : ''; ?>>TP2</option>
+									<option value="3"<?php echo $param->data['tp']==3 ? ' selected' : ''; ?>>TP3</option>
+								<?php } ?>
+								<?php if($param->data['year']==2) { ?>
+									<option value="3"<?php echo $param->data['tp']==3 ? ' selected' : ''; ?>>TP3</option>
+									<option value="4"<?php echo $param->data['tp']==4 ? ' selected' : ''; ?>>TP4</option>
+									<option value="5"<?php echo $param->data['tp']==5 ? ' selected' : ''; ?>>TP5</option>
+								<?php } ?>
 							</select>
 						</div>
 						<div>
