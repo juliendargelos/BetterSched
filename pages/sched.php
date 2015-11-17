@@ -113,9 +113,11 @@
 								?>
 							</select>
 						</div>
-						<div>
-							<input type="submit" value="Valider"/>
-						</div>
+						<noscript>
+							<div>
+								<input type="submit" value="Valider"/>
+							</div>
+						</noscript>
 					</form>
 				</td>
 			</tr>
