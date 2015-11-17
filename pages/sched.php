@@ -13,8 +13,7 @@
 	$betterSched->user->password=$session->password;
 	$betterSched->week=$param->data['week'];
 	$betterSched->group=$param->data['group'];
-	$betterSched->td=$param->data['td'];
-	$betterSched->tp=$param->data['tp'];
+	$betterSched->tdtp=$param->data['tdtp'];
 	$betterSched->year=$param->data['year'];
 	$betterSched->get();
 	
@@ -76,6 +75,26 @@
 								<option value="2"<?php echo $param->data['year']==2 ? ' selected' : ''; ?>>2A</option>
 							</select>
 						</div>
+						<?php if($param->data['group']=='MMI') { ?>
+							<div>
+								<label for="input-tdtp">TD/TP</label>
+								<select id="input-tdtp" name="tdtp">
+									<option value="0">Tous</option>
+									<?php if($param->data['year']==1) { ?>
+										<option value="11"<?php echo $param->data['tdtp']==11 ? ' selected' : ''; ?>>TD1/TP1</option>
+										<option value="12"<?php echo $param->data['tdtp']==12 ? ' selected' : ''; ?>>TD1/TP2</option>
+										<option value="22"<?php echo $param->data['tdtp']==22 ? ' selected' : ''; ?>>TD2/TP2</option>
+										<option value="23"<?php echo $param->data['tdtp']==23 ? ' selected' : ''; ?>>TD2/TP3</option>
+									<?php } ?>
+									<?php if($param->data['year']==2) { ?>
+										<option value="34"<?php echo $param->data['tdtp']==34 ? ' selected' : ''; ?>>TD3/TP4</option>
+										<option value="35"<?php echo $param->data['tdtp']==35 ? ' selected' : ''; ?>>TD3/TP5</option>
+										<option value="45"<?php echo $param->data['tdtp']==45 ? ' selected' : ''; ?>>TD4/TP5</option>
+										<option value="46"<?php echo $param->data['tdtp']==46 ? ' selected' : ''; ?>>TD4/TP6</option>
+									<?php } ?>
+								</select>
+							</div>
+						<?php } ?>
 						<div>
 							<label for="input-week">Semaine</label>
 							<select id="input-week" name="week">
@@ -92,34 +111,6 @@
 										echo '<option value="'.$w.'"'.($param->data['week']==$w ? ' selected' : '').'>'.$w.' ('.$d['begin'].' → '.$d['end'].')</option>';
 									}
 								?>
-							</select>
-						</div>
-						<div id="field-td" <?php if($param->data['group']=='MMI') echo 'class="visible"'; ?>>
-							<label for="input-td">Groupe de TD</label>
-							<select id="input-td" name="td">
-								<?php if($param->data['year']==1) { ?>
-									<option value="1"<?php echo $param->data['td']==1 ? ' selected' : ''; ?>>TD1</option>
-									<option value="2"<?php echo $param->data['td']==2 ? ' selected' : ''; ?>>TD2</option>
-								<?php } ?>
-								<?php if($param->data['year']==2) { ?>
-									<option value="3"<?php echo $param->data['td']==3 ? ' selected' : ''; ?>>TD3</option>
-									<option value="4"<?php echo $param->data['td']==4 ? ' selected' : ''; ?>>TD4</option>
-								<?php } ?>
-							</select>
-						</div>
-						<div id="field-tp" <?php if($param->data['group']=='MMI') echo 'class="visible"'; ?>>
-							<label for="input-tp">Groupe de TP</label>
-							<select id="input-tp" name="tp">
-								<?php if($param->data['year']==1) { ?>
-									<option value="1"<?php echo $param->data['tp']==1 ? ' selected' : ''; ?>>TP1</option>
-									<option value="2"<?php echo $param->data['tp']==2 ? ' selected' : ''; ?>>TP2</option>
-									<option value="3"<?php echo $param->data['tp']==3 ? ' selected' : ''; ?>>TP3</option>
-								<?php } ?>
-								<?php if($param->data['year']==2) { ?>
-									<option value="3"<?php echo $param->data['tp']==3 ? ' selected' : ''; ?>>TP3</option>
-									<option value="4"<?php echo $param->data['tp']==4 ? ' selected' : ''; ?>>TP4</option>
-									<option value="5"<?php echo $param->data['tp']==5 ? ' selected' : ''; ?>>TP5</option>
-								<?php } ?>
 							</select>
 						</div>
 						<div>

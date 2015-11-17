@@ -4,8 +4,7 @@
 		public $user;
 		public $week;
 		public $group;
-		public $td;
-		public $tp;
+		public $tdtp;
 		public $year;
 		public $languages;
 		private $semester=[
@@ -83,17 +82,16 @@
 								// Majuscule à la première lettre et enregistrement
 								$data['content']=ucfirst($content);
 								// Conditions de suppression d'éléments en fonctions du TD/TP et du groupe (MMI Seulement)
+								$td=floor($this->tdtp/10);
+								$tp=$this->tdtp-$td*10;
 								$tdtp_cond=[
-									$this->group!='MMI',
-									$this->td>2 && $this->year==1,
-									$this->tp>3 && $this->year==1,
-									$this->td<3 && $this->year==2,
-									$this->tp<4 && $this->year==2,
-									!preg_match('#\bTD\s*\d\b#',$data['content']) || preg_match('#\bTD\s*'.preg_quote($this->td).'\b#',$data['content']),
-									!preg_match('#\bTP\s*\d\b#',$data['content']) || preg_match('#\bTP\s*'.preg_quote($this->tp).'\b#',$data['content'])
+									$this->group!='MMI' || $this->tdtp==0,
+									!preg_match('#\bTD\s*\d\b#',$data['content']) && !preg_match('#\bTP\s*\d\b#',$data['content']),
+									$this->tdtp!=0 && (($this->td<=2 && $this->year==1) || ($td>=3 && $this->year==2)) && preg_match('#\bTD\s*'.preg_quote($td).'\b#',$data['content']),
+									$this->tdtp!=0 && (($this->tp<=3 && $this->year==1) || ($tp>=4 && $this->year==2)) && preg_match('#\bTP\s*'.preg_quote($tp).'\b#',$data['content'])
 									
 								];
-								if($tdtp_cond[0] || $tdtp_cond[1] || $tdtp_cond[2] || $tdtp_cond[3] || $tdtp_cond[4] || ($tdtp_cond[5] && $tdtp_cond[6])) {
+								if($tdtp_cond[0] || $tdtp_cond[1] || $tdtp_cond[2] || $tdtp_cond[3]) {
 									$h=$h->item(0)->getElementsByTagName('tr');
 									for($k=1; $k<$h->length; $k++) {
 										$d=$h->item($k)->getElementsByTagName('td');
